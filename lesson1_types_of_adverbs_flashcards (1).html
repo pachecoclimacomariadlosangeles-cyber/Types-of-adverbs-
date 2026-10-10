@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1: Types of Adverbs — Flashcard Practice</title>
+<style>
+:root { --navy:#17365d; --blue:#2878b5; --pale:#eaf4fb; --gold:#f2bd45; --ink:#203044; --green:#237a57; }
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#f4f8fc,#e8f2fb);color:var(--ink);min-height:100vh}
+main{max-width:900px;margin:0 auto;padding:28px 18px 40px}
+header{text-align:center;margin-bottom:22px}
+.eyebrow{font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;font-size:.8rem}
+h1{color:var(--navy);margin:8px 0;font-size:clamp(1.7rem,4vw,2.5rem)}
+header p{margin:0;color:#536579}
+.panel{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 28px #17365d13}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.counter{font-weight:700;color:var(--navy)}
+.progress{height:8px;background:#e4edf5;border-radius:99px;overflow:hidden;flex:1;min-width:120px}
+.progress span{display:block;height:100%;width:0;background:var(--blue);transition:width .25s}
+.stage{perspective:1000px;max-width:640px;margin:0 auto}
+.card{height:310px;position:relative;transform-style:preserve-3d;transition:transform .55s;cursor:pointer;outline:none}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;border:2px solid #d8e8f5}
+.front{background:linear-gradient(145deg,#fff,#edf7ff)}
+.back{background:linear-gradient(145deg,#e8f7ef,#fff);transform:rotateY(180deg);border-color:#b9e2cd}
+.face .label{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:var(--blue);margin-bottom:18px}
+.back .label{color:var(--green)}
+.face .content{font-size:clamp(1.25rem,3vw,1.8rem);font-weight:700;line-height:1.35}
+.face .hint{font-size:.9rem;color:#62758a;margin-top:22px}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+button{border:0;border-radius:10px;padding:12px 17px;font-size:1rem;font-weight:700;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.primary{background:var(--blue);color:#fff}.secondary{background:#e9f0f6;color:var(--navy)}.gold{background:var(--gold);color:#352a12}
+.quiz{margin-top:22px;border-top:1px solid #e1eaf2;padding-top:20px}
+.quiz h2{font-size:1.25rem;color:var(--navy);margin:0 0 8px}
+.quiz p{margin:7px 0 12px}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}
+.option{background:#f3f7fb;border:2px solid #dce7f0;color:var(--ink);text-align:left}
+.option:hover{border-color:var(--blue)}
+.option.correct{border-color:#50a77d;background:#e6f7ee}
+.option.wrong{border-color:#d46b6b;background:#fff0f0}
+.feedback{min-height:26px;font-weight:700;margin-top:12px}
+.feedback.good{color:var(--green)}.feedback.bad{color:#a33}
+.score{font-weight:700;color:var(--navy);margin-top:8px}
+footer{text-align:center;color:#6b7d90;font-size:.85rem;margin-top:18px}
+@media(max-width:520px){main{padding:18px 12px}.card{height:285px}.face{padding:20px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="eyebrow">MOOC • Grammar I</div>
+  <h1>Lesson 1: Types of Adverbs</h1>
+  <p>Flashcard practice with automatic feedback</p>
+</header>
+<section class="panel" aria-label="Flashcard activity">
+  <div class="topline">
+    <span class="counter" id="counter">Card 1 of 10</span>
+    <div class="progress" aria-label="Flashcard progress"><span id="progress"></span></div>
+  </div>
+  <div class="stage">
+    <div class="card" id="flashcard" role="button" tabindex="0" aria-label="Flashcard. Click or press Enter to flip.">
+      <div class="face front"><div class="label">Question · Click to flip</div><div class="content" id="frontText"></div><div class="hint">Think of the answer, then flip the card.</div></div>
+      <div class="face back"><div class="label">Answer</div><div class="content" id="backText"></div><div class="hint" id="backHint"></div></div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="secondary" id="prev">← Previous</button>
+    <button class="primary" id="flip">Flip card</button>
+    <button class="secondary" id="next">Next →</button>
+  </div>
+  <div class="quiz">
+    <h2>Quick Check</h2>
+    <p id="quizQuestion"></p>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div class="score" id="score">Score: 0 / 0 answered</div>
+    <div class="controls"><button class="gold" id="reset">Restart quick check</button></div>
+  </div>
+</section>
+<footer>Study tip: Identify the question the adverb answers: how, when, where, how often, or to what degree.</footer>
+</main>
+<script>
+const cards = [
+ {q:"What is an adverb?",a:"A word that gives more information about an action or describes how, when, where, how often, or to what degree something happens.",hint:"Adverbs add information to a sentence."},
+ {q:"Which type answers “How?”",a:"Adverbs of manner",hint:"Examples: slowly, quickly, carefully, well."},
+ {q:"Which type answers “When?”",a:"Adverbs of time",hint:"Examples: today, yesterday, soon, later."},
+ {q:"Which type answers “Where?”",a:"Adverbs of place",hint:"Examples: here, there, outside, everywhere."},
+ {q:"Which type answers “How often?”",a:"Adverbs of frequency",hint:"Examples: always, usually, often, sometimes, never."},
+ {q:"Which type answers “To what degree?” or “How much?”",a:"Adverbs of degree",hint:"Examples: very, too, quite, almost, extremely."},
+ {q:"Where does an adverb of manner usually appear?",a:"After the verb or object.",hint:"Example: She speaks English fluently."},
+ {q:"Where does an adverb of frequency usually appear?",a:"Before the main verb.",hint:"Example: I always study English."},
+ {q:"Where does an adverb of degree usually appear?",a:"Before the adjective or adverb it modifies.",hint:"Example: He runs extremely quickly."},
+ {q:"Where can an adverb of time often appear?",a:"At the end of the sentence.",hint:"Example: We have class today."}
+];
+const quiz = [
+ {q:"In “She speaks English fluently,” what type of adverb is “fluently”?",opts:["Adverb of time","Adverb of manner","Adverb of place"],correct:1,why:"“Fluently” tells how she speaks."},
+ {q:"In “We have class today,” what type of adverb is “today”?",opts:["Adverb of degree","Adverb of frequency","Adverb of time"],correct:2,why:"“Today” tells when."},
+ {q:"In “They are playing outside,” what type of adverb is “outside”?",opts:["Adverb of place","Adverb of manner","Adverb of time"],correct:0,why:"“Outside” tells where."},
+ {q:"Choose the adverb of frequency.",opts:["Almost","Never","There"],correct:1,why:"“Never” tells how often."},
+ {q:"In “She is very happy,” what does “very” modify?",opts:["A noun","An adjective","A place"],correct:1,why:"“Very” is an adverb of degree modifying the adjective “happy”."},
+ {q:"Choose the sentence with an adverb of frequency placed after “be.”",opts:["I always study English.","He is always happy.","She arrived yesterday."],correct:1,why:"After the verb “be,” the adverb of frequency can follow the verb."},
+ {q:"Which word is an adverb of manner?",opts:["Carefully","Tomorrow","Everywhere"],correct:0,why:"“Carefully” tells how an action is done."},
+ {q:"Where does an adverb of degree usually go?",opts:["Before the adjective or adverb it modifies","Always at the end","Before every noun"],correct:0,why:"Adverbs of degree usually come before the adjective or adverb they modify."}
+];
+let index=0, answers={};
+const $=id=>document.getElementById(id);
+function renderCard(){const c=cards[index];$("frontText").textContent=c.q;$("backText").textContent=c.a;$("backHint").textContent=c.hint;$("counter").textContent=`Card ${index+1} of ${cards.length}`;$("progress").style.width=`${(index+1)/cards.length*100}%`;$("flashcard").classList.remove("flipped");}
+function flip(){ $("flashcard").classList.toggle("flipped");}
+$("flashcard").addEventListener("click",flip);$("flashcard").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}});
+$("flip").addEventListener("click",flip);
+$("prev").addEventListener("click",()=>{index=(index-1+cards.length)%cards.length;renderCard();});
+$("next").addEventListener("click",()=>{index=(index+1)%cards.length;renderCard();});
+function renderQuiz(){const answered=Object.keys(answers).length;let correct=Object.values(answers).filter(Boolean).length;$("score").textContent=`Score: ${correct} / ${answered} answered (${quiz.length} questions total)`;if(!answers.currentQuestionShown){/* no-op */}}
+function showQuestion(){const q=quiz[window.quizIndex||0];$("quizQuestion").textContent=`${(window.quizIndex||0)+1}. ${q.q}`;$("feedback").textContent="";$("feedback").className="feedback";$("options").innerHTML="";q.opts.forEach((opt,i)=>{const b=document.createElement("button");b.className="option";b.textContent=opt;b.addEventListener("click",()=>{if(answers[window.quizIndex||0]!==undefined)return;const qi=window.quizIndex||0;const ok=i===q.correct;answers[qi]=ok;Array.from($("options").children).forEach((el,j)=>{el.disabled=true;if(j===q.correct)el.classList.add("correct");else if(j===i&&!ok)el.classList.add("wrong");});$("feedback").textContent=(ok?"Correct! ":"Not quite. ")+q.why;$("feedback").className="feedback "+(ok?"good":"bad");renderQuiz();if(qi<quiz.length-1){const n=document.createElement("button");n.className="primary";n.textContent="Next question →";n.style.marginTop="12px";n.addEventListener("click",()=>{window.quizIndex=qi+1;showQuestion();});$("options").appendChild(n);}else{$("feedback").textContent+=" Quiz complete!";}});$("options").appendChild(b);});if(answers[window.quizIndex||0]!==undefined){Array.from($("options").children).forEach((el,j)=>{el.disabled=true;if(j===q.correct)el.classList.add("correct");});}}
+$("reset").addEventListener("click",()=>{answers={};window.quizIndex=0;showQuestion();renderQuiz();});
+window.quizIndex=0;renderCard();showQuestion();renderQuiz();
+</script>
+</body>
+</html>
